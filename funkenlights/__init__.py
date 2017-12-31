@@ -11,7 +11,6 @@ def create_app(config):
     app.register_blueprint(views.MAIN)
     app.config['binaries'] = config['binaries']
     app.config['devices'] = config['devices']
-    app.config['groups'] = config['groups']
     app.run(host='0.0.0.0', debug=True)
 
     return app

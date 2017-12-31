@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, jsonify
+from subprocess import call
+
+from flask import Blueprint, render_template, jsonify, request
 from flask import current_app as app
 
 MAIN = Blueprint('route', __name__)
@@ -7,6 +9,13 @@ MAIN = Blueprint('route', __name__)
 def index():
     """Main status page."""
     return render_template('main.html', devices=app.config['devices'])
+
+@MAIN.route('/send', methods=["POST"])
+def send():
+    """A 200 page"""
+    cmd = [ app.config["binaries"]["send"], int(request.values['code']) ]
+    print(cmd)
+    return jsonify({"message":"Send triggered"})
 
 @MAIN.route('/success')
 def success():

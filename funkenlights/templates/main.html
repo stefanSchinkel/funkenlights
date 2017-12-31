@@ -40,10 +40,20 @@
 
 <script type="text/javascript">
     function cb(name, code, target) {
-        console.log('in callback')
-        msg = "Switched " + target + " " + name + " (code " + code + " )"
-        $('#notifier').fadeTo('fast', 1);
-        $('#notifier').text(msg).fadeTo( 3000, 0 );
+         $.ajax({
+            type:'POST',
+            url:"/send",
+            data: {"code" : code},
+            success:function(data){
+
+                msg = "Switched " + target + " " + name + " (code " + code + " )"
+                $('#notifier').fadeTo('fast', 1);
+                $('#notifier').text(msg).fadeTo( 3000, 0 );
+            },
+            error: function(xhr, textStatus, error){
+                console.log(error);
+            }
+        });
     }
 
 </script>
@@ -56,47 +66,18 @@
 
       <div class="starter-template">
 
-        <div id="notifier" class="alert alert-info" role="alert">
-          This is a info alert—check it out!
-        </div>
+        <div id="notifier" class="alert alert-info" role="alert"></div>
 
-        <h4>Living Room</h4>
-        <button type="button" id="foo" class="success btn btn-success btn-md" >ON</button>
-        <button type="button"  class="danger btn btn-danger btn-md"">OFF</button>
-
-        <h4>Dining Room</h4>
-        <button type="button" id="foo" class="success btn btn-success btn-md" >ON</button>
-        <button type="button" class="danger btn btn-danger btn-md" onclick="cb('Dining Room', 123, 'off')">OFF</button>
-
+        {% for dev in devices %}
+            <h4>{{ dev.name}}</h4>
+                <button type="button" class="success btn btn-success btn-md" onclick="cb('{{dev.name}}', '{{dev.on}}', 'on')">ON</button>
+                <button type="button" class="danger btn btn-danger btn-md" onclick="cb('{{dev.name}}', '{{dev.off}}', 'off')">OFF</button>
+        {% endfor %}
 
 
       </div>
 
     </div><!-- /.container -->
 
-    <script type="text/javascript">
-    $(function () {
-
-      $('#foo').click(function (event) {
-        console.log('button callback');
-        $.ajax({
-            type:'POST',
-            url:"/send",
-            // data:{},
-            success:function(data){
-                console.log('foo')
-            },
-            error: function(xhr, textStatus, error){
-                console.log(xhr);
-                console.log(textStatus);
-                console.log(error);
-            },
-            // dataType:"json"
-        });
-      // event.preventDefault();
-
-      });
-    });
-</script>
 </body>
 </html>
