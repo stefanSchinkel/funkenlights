@@ -13,7 +13,7 @@ def index():
 @MAIN.route('/send', methods=["POST"])
 def send():
     """A 200 page"""
-    cmd = [ app.config["binaries"]["send"], request.values['code'] ]
+    cmd = [ app.config["binaries"]["codesend"], request.values['code'] ]
     ret_code = call(cmd)
 
     return jsonify({"res": ret_code})
