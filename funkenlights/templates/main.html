@@ -5,80 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Funkenlight</title>
-    <!-- Bootstrap core CSS -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
-    <link href="http://fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/cabin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/lato.css') }}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
 
-<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-<style type="text/css" media="screen">
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 
-html,body{
-    font-family: 'Cabin', Helvetica, Arial, sans-serif;
-    background: #D2D3D7;
-}
 
-.buld {font-size:300px;}
+    <!-- custom CSS -->
+    <link href="{{ url_for('static', filename='css/custom.css') }}" media="screen" rel="stylesheet">
 
-h1 {
-    font-size: 40px;
-    text-align:center;
-    color: #fff;
-    text-shadow: 2px 2px 0px #737373, 2px 2px 0px #737373;
-}
-
-h2 {
-    font-size: 40px;
-    text-align:center;
-    color: rgb(121,121,121);
-    text-shadow: 2px 2px 0px #737373, 2px 2px 0px #737373;
-}
-
-.logo{
-    font-family: 'Lato', sans-serif;
-    font-size: 80px;
-    text-shadow: 0px 1px 0px #999, 0px 2px 0px #888, 0px 3px 0px #777, 0px 4px 0px #666, 0px 5px 0px #555, 0px 6px 0px #444, 0px 7px 0px #333, 0px 8px 7px #001135;
-}
-
-.center{
-    text-align:center;
-}
-#notifications {
-    cursor: pointer;
-    position: fixed;
-    z-index: 9999;
-    top: 0px;
-    margin-bottom: 22px;
-    margin-right: 400px;
-    max-width: 300px;
-    display: block;
-    margin: 0 auto;
-}
-
+<style type="text/css">
 .container {
-    width: 600px;
+    display: flex-inline;
+    width: 90%;
     text-align: center;
 }
-.lead{
-    text-align:center;
-    color: rgb(131, 131, 131);
-    /*font-size: 17px;*/
-}
-.starter-template{
-    padding: 40px 15px;
-      padding-top: 0px;
-}
 
-.notify_js{
-    width: 600px;
-    margin: auto;
+#notifier {
+    opacity: 0;
+    width: 100%;
+    text-align: center;
 }
-.hidden {
-    display: none;
-}
-
 </style>
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -88,44 +38,65 @@ h2 {
 </head>
 <body>
 
+<script type="text/javascript">
+    function cb(name, code, target) {
+        console.log('in callback')
+        msg = "Switched " + target + " " + name + " (code " + code + " )"
+        $('#notifier').fadeTo('fast', 1);
+        $('#notifier').text(msg).fadeTo( 3000, 0 );
+    }
 
+</script>
 
- <div class="container">
-    <h1 class="logo"><i class="fa fa-lightbulb-o bulb"></i><br/>Funkenlights</h1>
-        <div id="notifier" class="alert alert-info hidden" role="alert">
+ <!-- <div class="container"> -->
+    <div class="container">
+
+    <h1 class="logo"><i class="fa fa-lightbulb-o bulb"></i></h1>
+    <h1 class="logo">Funkenlights</h1>
+
+      <div class="starter-template">
+
+        <div id="notifier" class="alert alert-info" role="alert">
           This is a info alert—check it out!
         </div>
 
-      <div class="starter-template">
-        {% for device in devices %}
+        <h4>Living Room</h4>
+        <button type="button" id="foo" class="success btn btn-success btn-md" >ON</button>
+        <button type="button"  class="danger btn btn-danger btn-md"">OFF</button>
 
-        <h4>{{ device.name}}</h4>
-        <button type="button"  class="success btn btn-success btn-md" onclick="btnCallback('{{ device.on}}')">ON</button>
-        <button type="button"  class="danger btn btn-danger btn-md" onclick="btnCallback('{{ device.off}}')">OFF</button>
+        <h4>Dining Room</h4>
+        <button type="button" id="foo" class="success btn btn-success btn-md" >ON</button>
+        <button type="button" class="danger btn btn-danger btn-md" onclick="cb('Dining Room', 123, 'off')">OFF</button>
 
-        {% endfor %}
 
 
       </div>
 
     </div><!-- /.container -->
 
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript">
-    $.jQuery(document).ready(function($) {
-        $()
-    });
-    function btnCallback(code){
-        console.log("Send code was " + code)
-        $("#notifier").toggleClass('hidden');
-        Notify(code, null, null, 'danger');
-    }
-    </script>
+    $(function () {
 
+      $('#foo').click(function (event) {
+        console.log('button callback');
+        $.ajax({
+            type:'POST',
+            url:"/send",
+            // data:{},
+            success:function(data){
+                console.log('foo')
+            },
+            error: function(xhr, textStatus, error){
+                console.log(xhr);
+                console.log(textStatus);
+                console.log(error);
+            },
+            // dataType:"json"
+        });
+      // event.preventDefault();
+
+      });
+    });
+</script>
 </body>
 </html>
