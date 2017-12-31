@@ -27,12 +27,21 @@ Clone the repo, install the requirements using and run the app. It is recommende
 git clone git@github.com:stefanSchinkel/funkenlights.git
 cd funkenlights
 
-# create and activate a virtual environment
+# create  a virtual environment
 python -m venv .venv
+# for python version prior to 3.5  use all call like this
+# -p provides the path to the Python interpreter you want to use
+# virtualenv -p /usr/bin/python3.4 .venv
+
+# activate virtualenv
 source .venv/bin/activate
 
 # install requirements
 pip install -r requirements.txt
+
+# edit and rename the config file
+mv config.sample.json config.json
+vim config.json         # insert the path to the binaries and the codes to use
 
 # run app
 python main.py
