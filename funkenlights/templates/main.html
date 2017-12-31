@@ -46,7 +46,8 @@
             data: {"code" : code},
             success:function(data){
 
-                msg = "Switched " + target + " " + name + " (code " + code + " )"
+                msg = "Switched " + target + " " + name + " ("
+                msg = msg + " Returned: " + data.res + " )"
                 $('#notifier').fadeTo('fast', 1);
                 $('#notifier').text(msg).fadeTo( 3000, 0 );
             },
