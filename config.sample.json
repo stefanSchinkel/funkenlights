@@ -1,0 +1,19 @@
+{
+    "binaries": {
+        "send": "/home/pi/send",
+        "codesend": "/home/pi/codesend",
+        "sniff": "/home/pi/RPSniffer"
+    },
+    "devices": [
+        {
+            "name": "Living Room",
+            "on": "01",
+            "off": "10"
+        },
+        {
+            "name": "Dining Room",
+            "on": "02",
+            "off": "20"
+        }
+    ]
+}
