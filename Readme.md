@@ -14,9 +14,10 @@ Note: everything is currently in :construction: don't expect it to work out of t
 
 #### Physical Setup
 
-The interfacing with the actual hardware (that is the transmitter/receiver)is done by [433 Utils](https://github.com/ninjablocks/433Utils) and [wiringpi](https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/). Make sure to get those installed/compiled/run and the follow the instructions below.
+The interfacing with the actual hardware (that is the transmitter/receiver) is done by [433 Utils](https://github.com/ninjablocks/433Utils) and [wiringpi](https://projects.drogon.net/raspberry-pi/wiringpi/download-and-install/). Make sure to get those installed/compiled/run by following the instructions below.
 
-There's plenty of tutorials for this out there like [this](https://www.princetronics.com/how-to-read-433-mhz-codes-w-raspberry-pi-433-mhz-receiver/)
+**connecting receiver to the Pi**
+There's plenty of tutorials for this out there like [this](https://www.princetronics.com/how-to-read-433-mhz-codes-w-raspberry-pi-433-mhz-receiver/), just make sure to use the PIN configured in wiringpi, usually that's PIN 11 (GPIO-17)
 
 
 #### Installation
@@ -27,7 +28,7 @@ I recommend you do that all in a dedicate directory such as `~/Projects` or simi
 
 Some binaries are required for the interaction with the GPIO/433 Transmitter.
 
-**install wriningpi**
+**install wiringpi**
 
 Wiringpi is used for controlling the GPIO of the raspberry.
 
@@ -40,7 +41,7 @@ cd wiringpi
 
 **install 433utils**
 
-433 Utils provides the `send/codesend/RFsniffer` binaries, that encode/decode the 433Mhz signals from the transmitter/receiver.
+433 Utils provides the `send/codesend/RFsniffer` binaries, that encode/decode the 433Mhz signals.
 
 ```sh
 cd ~/Projects
@@ -52,7 +53,7 @@ export LD_LIBRARY_PATH=/usr/local/lib; make all
 
 ```
 
-If you follow the above instructions you shoud now have the executabel binaries in `~/Projects/433Utils/RPi_utils`, namely `send`, `codesend` and `RFSniffer`. These have to go into the config.json (the the full path, ie. `/home/pi/Projects/433Utils/RPi_utils/codesend`) as the app will use then.
+If you follow the above instructions you should now have the executable binaries in `~/Projects/433Utils/RPi_utils`, namely `send`, `codesend` and `RFSniffer`. (Test those by simply invoking them. If they don't segfault you should be good.) These have to go into the config.json (with the full path, ie. `/home/pi/Projects/433Utils/RPi_utils/codesend`) as the app will use them.
 
 **install Funkenlights**
 
@@ -66,7 +67,7 @@ cd funkenlights
 
 # create  a virtual environment
 python -m venv .venv
-# for python version prior to 3.5  use all call like this
+# for python version prior to 3.5  use a call like this
 # -p provides the path to the Python interpreter you want to use
 # virtualenv -p /usr/bin/python3.4 .venv
 
@@ -86,7 +87,7 @@ python main.py
 
 This will expose the interface at `http://IP_OF_RASPBERRY:5000` and `http://HOSTNAME_OF_RASPBERRY:5000` as the webapp binds to *all* interfaces available.
 
-This has security problems. Anybody in with network access to you Raspberry can use it. That's usually desired for private households, because everybody wants to switch on/off the lights, but might not be a smart idea in open networks.
+This has some security issues. Anybody with network access to your Raspberry can use it. That's usually desired for private households, because everybody wants to switch on/off the lights, but might not be a smart idea in open networks.
 
 #### Configuration
 
