@@ -21,9 +21,46 @@ There's plenty of tutorials for this out there like [this](https://www.princetro
 
 #### Installation
 
+I recommend you do that all in a dedicate directory such as `~/Projects` or similar.
+
+##### Dependencies
+
+Some binaries are required for the interaction with the GPIO/433 Transmitter.
+
+**install wriningpi**
+
+Wiringpi is used for controlling the GPIO of the raspberry.
+
+```sh
+cd ~/Projects           # or any other convenient location
+git clone git://git.drogon.net/wiringPi
+cd wiringpi
+./build
+```
+
+**install 433utils**
+
+433 Utils provides the `send/codesend/RFsniffer` binaries, that encode/decode the 433Mhz signals from the transmitter/receiver.
+
+```sh
+cd ~/Projects
+git clone --recursive git://github.com/ninjablocks/433Utils.git
+cd 433Utils/RPi_utils/              # we only need to build the RP binaries
+# in my raspbian, the library path wasn't set properly. We fix that and then
+# compile the RPI_utils
+export LD_LIBRARY_PATH=/usr/local/lib; make all
+
+```
+
+If you follow the above instructions you shoud now have the executabel binaries in `~/Projects/433Utils/RPi_utils`, namely `send`, `codesend` and `RFSniffer`. These have to go into the config.json (the the full path, ie. `/home/pi/Projects/433Utils/RPi_utils/codesend`) as the app will use then.
+
+**install Funkenlights**
+
 Clone the repo, install the requirements using and run the app. It is recommended to do this in a virtual environment.
 ```sh
+
 # clone repo
+cd ~/Projects
 git clone git@github.com:stefanSchinkel/funkenlights.git
 cd funkenlights
 
