@@ -2,4 +2,4 @@ install:
 	pip install -r requirements.txt
 
 test:
-	nosetests funkenlights/test/
+	FL_CONFIG=funkenlights/test/test.json nosetests funkenlights/test/
