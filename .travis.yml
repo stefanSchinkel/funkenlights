@@ -1,10 +1,9 @@
 language: python
 python:
-  - "2.7"
+  - "3.5"
 
-# we need numpy and mpl
 install:
   - pip install nose
 # command to run tests
 script:
-- cd funkentlights/test && nosetests *.py
+- make test
