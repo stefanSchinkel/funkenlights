@@ -1,7 +1,7 @@
 import json
 
 from funkenlights import create_app
-
+from funkenlights import config
 if __name__ == '__main__':
-with open("config.json") as fp:
-    app = create_app(json.load(fp))
+    app = create_app(config)
+    app.run(host='0.0.0.0', debug=True)
