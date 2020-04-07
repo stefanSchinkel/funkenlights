@@ -1,4 +1,11 @@
 {
     "binaries": "foo",
-    "devices": []
+    "devices": [
+        {
+            "id": 1,
+            "name": "foodevice",
+            "code_on": 123,
+            "code_off": 321
+        }
+    ]
 }

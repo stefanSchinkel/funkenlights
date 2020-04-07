@@ -1,3 +1,6 @@
 __pycache__
 .venv
 Readme.html
+.coverage
+htmlcov/
+pad.py
