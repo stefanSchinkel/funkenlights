@@ -1,18 +1,18 @@
 #[macro_use]
 extern crate rocket;
 
+use rocket::State;
 use rocket::form::Form;
 use rocket::http::ContentType;
 use rocket::response::status::NotFound;
 use rocket::serde::json::Json;
-use rocket::State;
-use rocket_dyn_templates::{context, Template};
+use rocket_dyn_templates::{Template, context};
 use serde::Deserialize;
 use serde_json::json;
 use std::fs;
 use std::process::Command;
 
-use include_dir::{include_dir, Dir};
+use include_dir::{Dir, include_dir};
 
 #[derive(Debug, Clone, Deserialize)]
 struct Config {
@@ -30,8 +30,8 @@ struct Binaries {
 #[derive(Debug, Clone, Deserialize, serde::Serialize)]
 struct Device {
     name: String,
-    on: String,
-    off: String,
+    on: u32,
+    off: u32,
 }
 
 #[derive(FromForm)]
@@ -68,10 +68,7 @@ fn send(cfg: &State<Config>, form: Form<SendForm>) -> Json<serde_json::Value> {
         .arg(&form.code)
         .status();
 
-    let ret_code = status
-        .ok()
-        .and_then(|st| st.code())
-        .unwrap_or(-1);
+    let ret_code = status.ok().and_then(|st| st.code()).unwrap_or(-1);
 
     Json(json!({ "res": ret_code }))
 }
